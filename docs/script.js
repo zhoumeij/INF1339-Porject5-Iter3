@@ -1,4 +1,5 @@
 console.log('Hello TensorFlow');
+
 import {MnistData} from './data.js';
 
 async function showExamples(data) {
@@ -34,27 +35,18 @@ async function run() {
   const data = new MnistData();
   await data.load();
   await showExamples(data);
+    const model = getModel();
+tfvis.show.modelSummary({name: 'Model Architecture'}, model);
+  
+await train(model, data);
+    
+await showAccuracy(model, data);
+await showConfusion(model, data);
 }
 
 
 
-
-
-
-
-const model = getModel();
-tfvis.show.modelSummary({name: 'Model Architecture'}, model);
-  
-await train(model, data);
-
-await showAccuracy(model, data);
-await showConfusion(model, data);
-
-
 document.addEventListener('DOMContentLoaded', run);
-
-
-
 
 function getModel() {
   const model = tf.sequential();
@@ -152,7 +144,6 @@ async function train(model, data) {
     callbacks: fitCallbacks
   });
 }
-
 const classNames = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
 
 function doPrediction(model, data, testDataSize = 500) {
@@ -186,4 +177,3 @@ async function showConfusion(model, data) {
 
   labels.dispose();
 }
-
